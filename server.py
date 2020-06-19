@@ -90,8 +90,6 @@ while True:
         st_status_location = request["st_status_location"]
 
         user_id = request["username"]
-        # a_db = account()
-        # user_data = a_db.user_data(user_id)
 
         key = gen_key()
 
@@ -109,9 +107,6 @@ while True:
             convert_tf(st_status_hashtag),
             convert_tf(st_status_location),
         )
-
-        # app(user_data[0], user_data[1], lk_status_hashtag, hashtag, lk_status_comment,
-        #     comments, lk_status_location, url, st_status_hashtag, st_status_location,)
         run_session.start_single_session(user_id, key)
 
         send_msg(client_socket, SUCCESS_CODE)

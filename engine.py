@@ -18,7 +18,7 @@ def xenon_a(self, lk_status_hashtag, hashtag, lk_status_comment, comment_content
         get_xpath("INTERACT", "HashTag_FirstPost")).click()
 
     while True:
-        for _ in range(gen_number_big):
+        for _ in range(gen_number_big()):
             message = comment_content[random.randrange(
                 0, len(comment_content))]
 
@@ -37,7 +37,7 @@ def xenon_a(self, lk_status_hashtag, hashtag, lk_status_comment, comment_content
                                 get_xpath("POST_HASHTAG", "CommentBox")).click()
                             quick_sleep()
                             self.driver.find_element_by_xpath(
-                                get_xpath("POST_HASHTAG", "CommentBox")).send_keys(message)
+                                get_xpath("POST_HASHTAG", "CommentBox")).send_keys(message.strip("'"))
                             quick_sleep()
                             self.driver.find_element_by_xpath(
                                 (get_xpath("POST_HASHTAG", "PostButton"))).click()
@@ -47,10 +47,13 @@ def xenon_a(self, lk_status_hashtag, hashtag, lk_status_comment, comment_content
             except Exception as e:
                 print(e)
             finally:
-                self.driver.find_element_by_xpath(get_xpath("POST_HASHTAG", "NextButton")).click() or \
-                    self.driver.find_element_by_xpath(
-                        get_xpath("POST_HASHTAG", "NextButton2")).click()
-                quick_sleep()
+                try:
+                    self.driver.find_element_by_xpath(get_xpath("POST_HASHTAG", "NextButton")).click() or \
+                        self.driver.find_element_by_xpath(
+                            get_xpath("POST_HASHTAG", "NextButton2")).click()
+                    quick_sleep()
+                except Exception as e:
+                    print(e)
         long_sleep()
 
 

@@ -15,7 +15,7 @@ class Instanaut:
         self.driver = webdriver.Chrome(
             "./WebDriver/chromedriver.exe", options=self.options)
         print(f"[SESSION ID] {self.driver.session_id}")
-        self.driver.set_window_size(1000, 1000)
+        # self.driver.set_window_size(1200, 1200)
 
     def session(self,
                 lk_status_hashtag,

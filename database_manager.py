@@ -18,9 +18,9 @@ class account:
 
     def user_data(self, username):
         with self.conn:
-            self.user_data = self.c.execute(
+            self.c.execute(
                 "SELECT * FROM accounts WHERE username=:username", {'username': username})
-
+            self.user_data = self.c.fetchall()
             return self.user_data
 
     def remove_user(self, username):
@@ -82,8 +82,9 @@ class sessions:
 
     def session_data(self, user):
         with self.conn:
-            self.user_data = self.c.execute(
+            self.c.execute(
                 "SELECT * FROM sessions WHERE user=:user", {'user': user})
+            self.user_data = self.c.fetchall()
             return self.user_data
 
     def update_run_status(self, session_key, working_status):
@@ -93,9 +94,9 @@ class sessions:
 
     def session_data_by_key(self, key):
         with self.conn:
-            self.session_data = self.c.execute(
+            self.c.execute(
                 "SELECT * FROM sessions WHERE key=:key", {'key': key})
-            print(self.session_data)
+            self.session_data = self.c.fetchall()
             return self.session_data
 
 

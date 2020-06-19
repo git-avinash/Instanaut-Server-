@@ -24,7 +24,8 @@ class session_runner:
         username = user_id
         user_id, password = get_credentials(username)
 
-        session_data = self.db.session_data_by_key(key)
+        session_data = self.db.session_data_by_key(key)[0]
+        print(session_data)
 
         lk_status_hashtag = convert_tf(session_data[3])
         hashtag = session_data[4]

@@ -49,7 +49,9 @@ def login_helper(self, username, password):
 
 
 def get_list_from_string(list_string):
-    return json.loads(list_string)
+    list_srt = list_string
+    final_list = list_srt.strip('][').split(', ')
+    return final_list
 
 
 def gen_key():
