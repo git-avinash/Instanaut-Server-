@@ -59,7 +59,7 @@ def xenon_a(self, lk_status_hashtag, hashtag, lk_status_comment, comment_content
 
 def xenon_b(self, st_status_hashtag, hashtag, st_status_location, url):
     while True:
-        for _ in range(gen_number_small):
+        for _ in range(gen_number_small()):
             if st_status_location:
                 self.driver.get(url)
             if st_status_hashtag:

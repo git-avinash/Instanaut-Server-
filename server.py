@@ -3,7 +3,7 @@ import json
 
 from signup import SignUp
 from database_manager import account, sessions
-from interact import gen_key, convert_tf
+from interact import gen_key, convert_tf, get_list_from_string
 from main import app
 from run_sessions import session_runner
 
@@ -20,9 +20,10 @@ s.bind(ADDR)
 s.listen(5)
 print(f"[ACTIVE] Hosted on {SERVER}")
 print(f"[CONNECT TO] {socket.gethostbyname(socket.gethostname())}")
+print(f"[PORT] {PORT}")
 
 run_session = session_runner()
-run_session.start_all_existing_sessions()
+# run_session.start_all_existing_sessions()
 
 
 def send_msg(client_socket, send_message):
@@ -134,17 +135,17 @@ while True:
 
         for session in user_session_data:
             data = {
-                "user": session[0],
+                # "user": session[0],
                 "key": session[1],
-                "working_status": convert_tf(session[2]),
-                "lk_status_hashtag": convert_tf(session[3]),
+                "working_status": session[2],
+                "lk_status_hashtag": session[3],
                 "hashtag": session[4],
-                "lk_status_comment": convert_tf(session[5]),
-                "comments": session[6],
-                "lk_status_location": convert_tf(session[7]),
+                "lk_status_comment": session[5],
+                "comments": get_list_from_string(session[6]),
+                "lk_status_location": session[7],
                 "url": session[8],
-                "st_status_hashtag": convert_tf(session[9]),
-                "st_status_location": convert_tf(session[10]),
+                "st_status_hashtag": session[9],
+                "st_status_location": session[10],
             }
             session_data.append(data)
         message = {"data": session_data}
