@@ -185,3 +185,6 @@ while True:
 
     if request[COMMAND] == "stopAllSessions":
         pass
+
+    else:
+        pass
