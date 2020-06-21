@@ -62,7 +62,7 @@ while True:
     request = json.loads(payload)
 
     """xX COMMANDS BELOW Xx"""
-
+    #
     if request[COMMAND] == "connectionTest":
         send_msg(client_socket, SUCCESS_CODE)
 
@@ -78,7 +78,7 @@ while True:
 
         send_message = {'status': message}
         send_msg(client_socket, send_message)
-
+    #
     if request[COMMAND] == "createSession":
         working_status = request["working_status"]
         lk_status_hashtag = request["lk_status_hashtag"]
@@ -111,7 +111,7 @@ while True:
         run_session.start_single_session(user_id, key)
 
         send_msg(client_socket, SUCCESS_CODE)
-
+    #
     if request[COMMAND] == "fetchAllUsers":
         db = account()
         all_data = db.all_data()
@@ -124,7 +124,7 @@ while True:
         message = {"user_data": user_data}
 
         send_msg(client_socket, message)
-
+    #
     if request[COMMAND] == "fetchSessionData":
         user_id = request["username"]
 
@@ -150,18 +150,18 @@ while True:
             session_data.append(data)
         message = {"data": session_data}
         send_msg(client_socket, message)
-
+    #
     if request[COMMAND] == "triggerSessionActivity":
         user_id = request["username"]
         session_id = request["key"]
         working_status = request["working_status"]
 
-        db = session()
+        db = sessions()
         db.update_run_status(session_id, working_status)
 
         send_msg(client_socket, SUCCESS_CODE)
 
-        if working_status == True:
+        if request["working_status"] == 1:
             run_session.start_single_session(user_id, session_id)
 
     if request[COMMAND] == "deleteAccount":
@@ -171,7 +171,7 @@ while True:
         db.remove_user(user_id)
 
         send_msg(client_socket, SUCCESS_CODE)
-
+    #
     if request[COMMAND] == "deleteSession":
         sessionKey = request["sessionKey"]
 
