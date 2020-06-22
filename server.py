@@ -6,6 +6,9 @@ from database_manager import account, sessions
 from interact import gen_key, convert_tf, get_list_from_string
 from main import app
 from run_sessions import session_runner
+from server_info import server_info
+
+server_info()
 
 HEADERSIZE = 10
 SERVER = "0.0.0.0"
@@ -18,12 +21,9 @@ SUCCESS_CODE = {'status': 'success'}
 s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 s.bind(ADDR)
 s.listen(5)
-print(f"[ACTIVE] Hosted on {SERVER}")
-print(f"[CONNECT TO] {socket.gethostbyname(socket.gethostname())}")
-print(f"[PORT] {PORT}")
 
 run_session = session_runner()
-# run_session.start_all_existing_sessions()
+run_session.start_all_existing_sessions()
 
 
 def send_msg(client_socket, send_message):
@@ -163,6 +163,11 @@ while True:
 
         if request["working_status"] == 1:
             run_session.start_single_session(user_id, session_id)
+
+        # if request["working_status"] == 0:
+        #     session_instance = run_session.return_sessions_object_by_key(
+        #         session_id)
+        #     session_instance.change_running_status(False)
 
     if request[COMMAND] == "deleteAccount":
         user_id = request["username"]

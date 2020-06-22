@@ -4,6 +4,7 @@ import time
 from database_manager import sessions, account
 from main import app
 from interact import convert_tf, get_list_from_string
+from trigger_engine_activity import TriggerEngineActivity
 
 thread_dict = {}
 
@@ -77,3 +78,9 @@ class session_runner:
                     time.sleep(30)
         except Exception as e:
             print(e)
+
+    def return_sessions_object_by_key(self, key):
+        return thread_dict[key]
+
+    def change_running_status(self, status):
+        TriggerEngineActivity(is_running=status)

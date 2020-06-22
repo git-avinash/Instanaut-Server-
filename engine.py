@@ -3,9 +3,11 @@ xenon_a => Engine dedicated towards mass liking and commenting on posts for both
 xenon_b => Engine dedicated towards Viewing Mass Stories for both Hashtag and Location.
 """
 
-from interact import wait_for, quick_sleep, long_sleep, gen_number_big, gen_number_small, get_xpath
 import random
 import time
+
+from interact import wait_for, quick_sleep, long_sleep, gen_number_big, gen_number_small, get_xpath
+from trigger_engine_activity import TriggerEngineActivity
 
 
 def xenon_a(self, lk_status_hashtag, hashtag, lk_status_comment, comment_content, lk_status_location, url):
@@ -17,7 +19,7 @@ def xenon_a(self, lk_status_hashtag, hashtag, lk_status_comment, comment_content
     self.driver.find_element_by_xpath(
         get_xpath("INTERACT", "HashTag_FirstPost")).click()
 
-    while True:
+    while TriggerEngineActivity().running_status:
         for _ in range(gen_number_big()):
             message = comment_content[random.randrange(
                 0, len(comment_content))]
@@ -58,7 +60,7 @@ def xenon_a(self, lk_status_hashtag, hashtag, lk_status_comment, comment_content
 
 
 def xenon_b(self, st_status_hashtag, hashtag, st_status_location, url):
-    while True:
+    while TriggerEngineActivity().running_status:
         for _ in range(gen_number_small()):
             if st_status_location:
                 self.driver.get(url)
