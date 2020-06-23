@@ -99,7 +99,7 @@ def quick_sleep():
 
 def long_sleep():
     sleep_time = random.randrange(60, 120)
-    print_log("Sleeping for {sleep_time} minutes", "INFO")
+    print_log(f"Sleeping for {sleep_time} minutes", "INFO")
     time.sleep(sleep_time)
 
 
