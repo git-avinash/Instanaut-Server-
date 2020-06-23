@@ -5,7 +5,8 @@ from selenium.common.exceptions import TimeoutException
 import time
 import random
 import string
-import json
+import colorama
+import termcolor2
 
 from database_manager import key_logger
 from xpath_compile import xpath
@@ -21,7 +22,7 @@ def wait_for(instance, xpath):
         WebDriverWait(instance, delay).until(
             ec.presence_of_element_located((By.XPATH, xpath)))
     except TimeoutException as e:
-        print(e)
+        print_log_error(e, "ERROR")
 
 
 def login_helper(self, username, password):
@@ -43,9 +44,9 @@ def login_helper(self, username, password):
                 get_xpath("INTERACT", "Pop_up")).click()
             quick_sleep()
         except Exception as e:
-            print(e)
+            print_log_error(e, "ERROR")
     except Exception as e:
-        print(e)
+        print_log_error(e, "ERROR")
 
 
 def get_list_from_string(list_string):
@@ -82,12 +83,24 @@ def convert_tf(bool_arg):
         return False
 
 
+def print_log_error(log, summary):
+    colorama.init()
+    print(termcolor2.colored(f"[{summary}] {log}", "red"))
+
+
+def print_log(log, summary):
+    colorama.init()
+    print(termcolor2.colored(f"[{summary}] {log}", "green"))
+
+
 def quick_sleep():
     time.sleep(random.randrange(2, 10))
 
 
 def long_sleep():
-    time.sleep(random.random(60, 120))
+    sleep_time = random.randrange(60, 120)
+    print_log("Sleeping for {sleep_time} minutes", "INFO")
+    time.sleep(sleep_time)
 
 
 def gen_number_big():

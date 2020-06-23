@@ -14,10 +14,10 @@ class Instanaut:
         self.options.add_argument("--mute-audio")
         self.driver = webdriver.Chrome(
             "./WebDriver/chromedriver.exe", options=self.options)
-        print(f"[SESSION ID] {self.driver.session_id}")
         # self.driver.set_window_size(1200, 1200)
 
     def session(self,
+                key,
                 lk_status_hashtag,
                 hashtag,
                 lk_status_comment,
@@ -34,6 +34,7 @@ class Instanaut:
         if lk_status_hashtag or lk_status_location:
             xenon_a(
                 self,
+                key,
                 lk_status_hashtag,
                 hashtag,
                 lk_status_comment,
@@ -45,6 +46,7 @@ class Instanaut:
         if st_status_hashtag or st_status_location:
             xenon_b(
                 self,
+                key,
                 st_status_hashtag,
                 hashtag,
                 st_status_location,

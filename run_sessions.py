@@ -3,8 +3,7 @@ import time
 
 from database_manager import sessions, account
 from main import app
-from interact import convert_tf, get_list_from_string
-from trigger_engine_activity import TriggerEngineActivity
+from interact import convert_tf, get_list_from_string, print_log_error
 
 thread_dict = {}
 
@@ -20,7 +19,6 @@ class session_runner:
         user_id, password = credentials[0], credentials[1]
 
         session_data = self.db.session_data_by_key(key)[0]
-        print(session_data)
 
         lk_status_hashtag = convert_tf(session_data[3])
         hashtag = session_data[4]
@@ -31,7 +29,8 @@ class session_runner:
         st_status_hashtag = convert_tf(session_data[9])
         st_status_location = convert_tf(session_data[10])
 
-        thread_dict[key] = threading.Thread(target=app, args=(user_id,
+        thread_dict[key] = threading.Thread(target=app, args=(key,
+                                                              user_id,
                                                               password,
                                                               lk_status_hashtag,
                                                               hashtag,
@@ -64,7 +63,8 @@ class session_runner:
                     st_status_hashtag = convert_tf(session[9])
                     st_status_location = convert_tf(session[10])
 
-                    thread_dict[key] = threading.Thread(target=app, args=(user_id,
+                    thread_dict[key] = threading.Thread(target=app, args=(key,
+                                                                          user_id,
                                                                           password,
                                                                           lk_status_hashtag,
                                                                           hashtag,
@@ -75,12 +75,7 @@ class session_runner:
                                                                           st_status_hashtag,
                                                                           st_status_location))
                     thread_dict[key].start()
+
                     time.sleep(30)
         except Exception as e:
-            print(e)
-
-    def return_sessions_object_by_key(self, key):
-        return thread_dict[key]
-
-    def change_running_status(self, status):
-        TriggerEngineActivity(is_running=status)
+            print_log_error(e, "ERROR")

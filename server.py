@@ -3,7 +3,7 @@ import json
 
 from signup import SignUp
 from database_manager import account, sessions
-from interact import gen_key, convert_tf, get_list_from_string
+from interact import gen_key, convert_tf, get_list_from_string, print_log, print_log_error
 from main import app
 from run_sessions import session_runner
 from server_info import server_info
@@ -28,12 +28,13 @@ run_session.start_all_existing_sessions()
 
 def send_msg(client_socket, send_message):
     final_send_message = json.dumps(send_message)
+    print_log(final_send_message, "SENDING")
     client_socket.send(bytes(final_send_message, FORMAT))
 
 
 while True:
     client_socket, address = s.accept()
-    print(f"[CONNECTED] {address}")
+    print_log(address, "CONNECTED")
     header = b''
     while len(header) < HEADERSIZE:
         chunk = client_socket.recv(HEADERSIZE - len(header))
@@ -42,7 +43,8 @@ while True:
         header += chunk
 
     if len(header) < HEADERSIZE:
-        print("Client disconnected without sending full header")
+        print_log_error(
+            "Client disconnected without sending full header", "ERROR")
         continue
 
     payload_len = int(header)
@@ -54,15 +56,16 @@ while True:
         payload += chunk
 
     if len(payload) < payload_len:
-        print("Client disconnected without sending full payload")
+        print_log_error(
+            "Client disconnected without sending full payload", "ERROR")
         continue
 
     payload = payload.decode(FORMAT)
-    print(f"[REQUEST] {payload}")
+    print_log(payload, "PAYLOAD")
     request = json.loads(payload)
 
     """xX COMMANDS BELOW Xx"""
-    #
+    
     if request[COMMAND] == "connectionTest":
         send_msg(client_socket, SUCCESS_CODE)
 
@@ -78,7 +81,7 @@ while True:
 
         send_message = {'status': message}
         send_msg(client_socket, send_message)
-    #
+    
     if request[COMMAND] == "createSession":
         working_status = request["working_status"]
         lk_status_hashtag = request["lk_status_hashtag"]
@@ -111,7 +114,7 @@ while True:
         run_session.start_single_session(user_id, key)
 
         send_msg(client_socket, SUCCESS_CODE)
-    #
+    
     if request[COMMAND] == "fetchAllUsers":
         db = account()
         all_data = db.all_data()
@@ -124,7 +127,7 @@ while True:
         message = {"user_data": user_data}
 
         send_msg(client_socket, message)
-    #
+    
     if request[COMMAND] == "fetchSessionData":
         user_id = request["username"]
 
@@ -150,7 +153,7 @@ while True:
             session_data.append(data)
         message = {"data": session_data}
         send_msg(client_socket, message)
-    #
+    
     if request[COMMAND] == "triggerSessionActivity":
         user_id = request["username"]
         session_id = request["key"]
@@ -164,10 +167,8 @@ while True:
         if request["working_status"] == 1:
             run_session.start_single_session(user_id, session_id)
 
-        # if request["working_status"] == 0:
-        #     session_instance = run_session.return_sessions_object_by_key(
-        #         session_id)
-        #     session_instance.change_running_status(False)
+        if request["working_status"] == 0:
+            print_log("Closing session (Can take upto a minute)", "INFO")
 
     if request[COMMAND] == "deleteAccount":
         user_id = request["username"]
@@ -176,7 +177,7 @@ while True:
         db.remove_user(user_id)
 
         send_msg(client_socket, SUCCESS_CODE)
-    #
+    
     if request[COMMAND] == "deleteSession":
         sessionKey = request["sessionKey"]
 

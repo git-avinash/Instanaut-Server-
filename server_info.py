@@ -31,7 +31,7 @@ def server_info():
 ##    - SERVER *PYTHON* => https://github.com/git-avinash/Instanaut-Server-   ##                                                                                                             
 ##    - GUI *DART* => https://github.com/git-avinash/Instanaut-GUI-           ##          
 ##                                                                            ##               
-##  + OPENSOURCE LIENCE                                                       ##                                    
+##  + OPENSOURCE LICENCE                                                      ##                                    
 ##    Copyright 2020 Avinash S Sah                                            ##                                               
 ##    SPDX-License-Identifier: Apache-2.0                                     ##                                                      
 ##                                                                            ##               
@@ -39,20 +39,13 @@ def server_info():
 """, "blue"))
 
     print(termcolor2.colored(f"""
-################################################################################
-##                                                                              
-##  [SERVER VERSION] 1.0.0+1                                         
-##  [RECOMMENDED APP VERSION] 1.0.0+1 ANDROID & WINDOWS                                        
-##  [IP] {socket.gethostbyname(socket.gethostname())}     
-##  [PORT] 5050
-##                                                                              
-################################################################################
+- [SERVER VERSION] 1.0.0+2                                         
+- [RECOMMENDED APP VERSION] 1.0.0+1 ANDROID & WINDOWS                                        
+- [IP] {socket.gethostbyname(socket.gethostname())}     
+- [PORT] 5050
 """, "green"))
 
-    print(termcolor2.colored("""
-#########################
-##                     ##     
-##  SERVER LOGS BELOW  ##                        
-##                     ##     
-#########################
+    print(termcolor2.colored("""                       
+    SERVER LOGS BELOW    
+    *****************                                             
 """, "red"))
